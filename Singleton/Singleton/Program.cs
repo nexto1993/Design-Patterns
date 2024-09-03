@@ -1,7 +1,7 @@
 ﻿namespace Singleton
 {
 
-    public class ConfigurationManager
+    sealed class ConfigurationManager
     {
         private static ConfigurationManager _instance;
         private static readonly object _lock = new object();
