@@ -31,23 +31,24 @@
             return $"Value for {key}";
         }
     }
-        internal class Program
+    internal class Program
     {
         static void Main(string[] args)
         {
-            // Retrieve the single instance of ConfigurationManager
-            ConfigurationManager configManager1 = ConfigurationManager.GetInstance();
-            ConfigurationManager configManager2 = ConfigurationManager.GetInstance();
 
-            // Verify that both variables point to the same instance
-            if (configManager1 == configManager2)
+            Thread th1 = new Thread(() =>
             {
-                Console.WriteLine("Both instances are the same.");
-            }
+                ConfigurationManager config = ConfigurationManager.GetInstance();
+            });
 
-            // Use the singleton instance to get configuration values
-            Console.WriteLine(configManager1.GetConfiguration("DatabaseConnectionString"));
-            Console.WriteLine(configManager2.GetConfiguration("APIKey"));
+            Thread th2 = new Thread(() =>
+            {
+                ConfigurationManager config = ConfigurationManager.GetInstance();
+            });
+            th1.Start();
+            th2.Start();
+            th1.Join();
+            th2.Join();
         }
     }
 }
